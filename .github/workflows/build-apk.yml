@@ -1,0 +1,77 @@
+name: Build APK and publish test release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'bootcheck-oct-27-2026-12-24-44-am.zip'
+      - '.github/workflows/build-apk.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bootcheck-apk-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: |
+          sdkmanager "platforms;android-36.1" "build-tools;36.0.0" "platform-tools"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.3.1'
+
+      - name: Extract project ZIP
+        run: |
+          mkdir -p source
+          unzip -q bootcheck-oct-27-2026-12-24-44-am.zip -d source
+          test -f source/settings.gradle.kts
+          test -f source/app/build.gradle.kts
+
+      - name: Build debug APK (no release keystore required)
+        run: gradle -p source --no-daemon --stacktrace assembleDebug
+
+      - name: Verify APK exists
+        run: |
+          test -s source/app/build/outputs/apk/debug/app-debug.apk
+          sha256sum source/app/build/outputs/apk/debug/app-debug.apk | tee apk-sha256.txt
+
+      - name: Upload APK and checksum as workflow artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: BootCheck-debug-apk
+          path: |
+            source/app/build/outputs/apk/debug/app-debug.apk
+            apk-sha256.txt
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish test prerelease
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: test-build-${{ github.run_number }}
+          name: BootCheck test build ${{ github.run_number }}
+          prerelease: true
+          generate_release_notes: true
+          files: |
+            source/app/build/outputs/apk/debug/app-debug.apk
+            apk-sha256.txt
