@@ -1,85 +1,61 @@
 # BootCheck for Android
 
 <p align="center">
-  <strong>Automated Android APK builds with GitHub Actions</strong><br>
-  Build, verify, and download BootCheck test APKs directly from GitHub.
+  <strong>Understand your Android device's boot and security status</strong><br>
+  A device-inspection app for reviewing bootloader state, root indicators, and app integrity checks.
 </p>
 
 <p align="center">
-  <a href="https://github.com/game6789y-wq/Test-/actions/workflows/build-apk.yml">
-    <img alt="Build APK" src="https://github.com/game6789y-wq/Test-/actions/workflows/build-apk.yml/badge.svg">
-  </a>
   <a href="https://github.com/game6789y-wq/Test-/releases">
-    <img alt="GitHub Releases" src="https://img.shields.io/badge/Downloads-GitHub%20Releases-blue?logo=github">
+    <img alt="Download APK" src="https://img.shields.io/badge/Download-Android%20APK-2ea44f?logo=android">
+  </a>
+  <a href="https://github.com/game6789y-wq/Test-/actions/workflows/build-apk.yml">
+    <img alt="Build status" src="https://github.com/game6789y-wq/Test-/actions/workflows/build-apk.yml/badge.svg">
   </a>
 </p>
 
 ---
 
-## ✨ Overview
+## 📱 About BootCheck
 
-This repository packages the BootCheck Android project and uses a GitHub Actions workflow to build an APK automatically. The workflow also calculates a SHA-256 checksum so you can verify the downloaded file.
+**BootCheck** is an Android utility designed to help users inspect selected device-security signals in one place. It presents checks and findings in a more accessible way so users can better understand their device's configuration.
+
+## 🔎 What it helps you review
+
+- **Bootloader status** — review available indicators related to the device's bootloader state.
+- **Root indicators** — check for signals that may suggest the device has root access or has been modified.
+- **Device and app integrity** — review available integrity-related information and checks.
+- **Risk overview** — understand the possible security implications of detected indicators.
+- **Results at a glance** — use the app's findings to guide further investigation of the device.
+
+> **Important:** Android versions, device manufacturers, system restrictions, and detection methods can affect results. A check may produce false positives or fail to detect some modifications. BootCheck should be treated as an informational aid, not a guarantee that a device is secure or compromised.
+
+## 👤 Who is it for?
+
+- Android users who want to learn more about their device's configuration.
+- Users troubleshooting bootloader or root-related compatibility issues.
+- Developers and testers who need a convenient first-pass view of device-security indicators.
 
 ## 📥 Download
 
-- **[Browse releases and download the APK](https://github.com/game6789y-wq/Test-/releases)**
-- **[View build history and logs](https://github.com/game6789y-wq/Test-/actions)**
+Get the available Android APK from **[GitHub Releases](https://github.com/game6789y-wq/Test-/releases)**. Review the release notes and verify the checksum when one is provided.
 
-Choose `app-debug.apk` from a successful release. The `apk-sha256.txt` file contains its SHA-256 checksum.
+This repository currently distributes a **debug-signed test APK**. It is intended for testing, not as a production-signed release. Android may require you to uninstall a previously installed build if its signing certificate differs; uninstalling can erase that app's local data.
 
-## 🚀 Automated build
+## 🛡️ Privacy and safe use
 
-A push to `main` that changes the project ZIP, workflow, or README starts a build. You can also start one manually:
+- Use the findings as diagnostic information and verify important results independently.
+- Do not share device reports publicly if they contain information you consider private.
+- Do not use the app's results as the sole basis for high-impact security decisions.
 
-1. Open **[Actions](https://github.com/game6789y-wq/Test-/actions/workflows/build-apk.yml)**.
-2. Select **Build APK and publish release**.
-3. Choose **Run workflow**.
+## 🧰 Project
 
-On success, the workflow:
-
-1. Sets up Java and the Android SDK.
-2. Extracts the Android project from the source ZIP.
-3. Generates a temporary standard debug keystore.
-4. Builds `app-debug.apk` with Gradle.
-5. Checks that the APK exists and calculates its SHA-256 checksum.
-6. Uploads the APK and checksum as a workflow artifact.
-7. Publishes a GitHub Release containing both files.
-
-## 🧾 Verify the download
-
-If you have `sha256sum` available, run this command in the folder containing the APK and checksum file:
-
-```bash
-sha256sum -c apk-sha256.txt
-```
-
-The checksum file currently records the APK filename and its SHA-256 digest. Keep the APK and checksum together when verifying.
-
-## ⚠️ Signing and installation
-
-This workflow produces a **debug-signed test APK**, not a production-signed Android release.
-
-- A debug APK is intended for testing.
-- Because the workflow creates a new debug keystore during each run, APKs from different runs may have different signing certificates.
-- Android may refuse to install an APK over an existing app if its signing certificate differs. You may need to uninstall the previous installation first; uninstalling can delete that app's local data.
-- For production distribution and reliable in-place updates, configure a protected, persistent release-signing key and use a dedicated release build.
-
-**Do not use this debug build as a production release.**
-
-## 🗂️ Repository contents
-
-| Path | Purpose |
-| --- | --- |
-| `bootcheck-oct-27-2026-12-24-44-am.zip` | Android project source archive |
-| `.github/workflows/build-apk.yml` | Automated build and release workflow |
-| `README.md` | Project and build instructions |
-
-## 📊 Build status
-
-The workflow status badge above reflects the latest workflow state. Check the **[Actions page](https://github.com/game6789y-wq/Test-/actions)** for logs and the **[Releases page](https://github.com/game6789y-wq/Test-/releases)** for published APKs. A commit alone does not guarantee a successful build; look for a completed run with a successful conclusion.
+- **Source package:** [Android project ZIP](https://github.com/game6789y-wq/Test-/blob/main/bootcheck-oct-27-2026-12-24-44-am.zip)
+- **Downloads:** [Releases](https://github.com/game6789y-wq/Test-/releases)
+- **Build history:** [GitHub Actions](https://github.com/game6789y-wq/Test-/actions)
 
 ---
 
 <p align="center">
-  Made with GitHub Actions · BootCheck Android
+  BootCheck · Android device inspection
 </p>
