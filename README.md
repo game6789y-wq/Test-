@@ -1,61 +1,79 @@
 # BootCheck for Android
 
 <p align="center">
-  <strong>Understand your Android device's boot and security status</strong><br>
-  A device-inspection app for reviewing bootloader state, root indicators, and app integrity checks.
+  <strong>A clearer view of your Android device's boot and security signals</strong><br>
+  A practical utility for checking selected bootloader, root, and integrity indicators.
 </p>
 
 <p align="center">
   <a href="https://github.com/game6789y-wq/Test-/releases">
-    <img alt="Download APK" src="https://img.shields.io/badge/Download-Android%20APK-2ea44f?logo=android">
+    <img alt="Download APK" src="https://img.shields.io/badge/Download-APK-218838?logo=android&logoColor=white" />
   </a>
   <a href="https://github.com/game6789y-wq/Test-/actions/workflows/build-apk.yml">
-    <img alt="Build status" src="https://github.com/game6789y-wq/Test-/actions/workflows/build-apk.yml/badge.svg">
+    <img alt="Build status" src="https://github.com/game6789y-wq/Test-/actions/workflows/build-apk.yml/badge.svg" />
+  </a>
+  <a href="https://github.com/game6789y-wq/Test-/commits/main">
+    <img alt="Latest commits" src="https://img.shields.io/github/last-commit/game6789y-wq/Test-" />
   </a>
 </p>
 
 ---
 
-## 📱 About BootCheck
+## About
 
-**BootCheck** is an Android utility designed to help users inspect selected device-security signals in one place. It presents checks and findings in a more accessible way so users can better understand their device's configuration.
+**BootCheck** is an Android device-inspection utility that brings selected boot and security-related checks together. It is intended to help users understand device configuration and investigate compatibility or troubleshooting questions.
 
-## 🔎 What it helps you review
+## Key areas
 
-- **Bootloader status** — review available indicators related to the device's bootloader state.
-- **Root indicators** — check for signals that may suggest the device has root access or has been modified.
-- **Device and app integrity** — review available integrity-related information and checks.
-- **Risk overview** — understand the possible security implications of detected indicators.
-- **Results at a glance** — use the app's findings to guide further investigation of the device.
+| Area | What it helps you investigate |
+| --- | --- |
+| **Bootloader** | Available indicators about the device's bootloader state |
+| **Root detection** | Signals that may indicate root access or system modification |
+| **Integrity checks** | Available device or app integrity-related findings |
+| **Troubleshooting** | Clues to help guide further investigation when an app or feature has compatibility issues |
 
-> **Important:** Android versions, device manufacturers, system restrictions, and detection methods can affect results. A check may produce false positives or fail to detect some modifications. BootCheck should be treated as an informational aid, not a guarantee that a device is secure or compromised.
+The checks available and their results can vary by device, manufacturer, Android version, and system configuration. Treat findings as indicators—not definitive proof.
 
-## 👤 Who is it for?
+## Who might use it?
 
-- Android users who want to learn more about their device's configuration.
-- Users troubleshooting bootloader or root-related compatibility issues.
-- Developers and testers who need a convenient first-pass view of device-security indicators.
+- Android users exploring their device's configuration.
+- Users troubleshooting bootloader- or root-related compatibility issues.
+- Developers and testers performing an initial device check.
 
-## 📥 Download
+## Download and install
 
-Get the available Android APK from **[GitHub Releases](https://github.com/game6789y-wq/Test-/releases)**. Review the release notes and verify the checksum when one is provided.
+1. Open **[GitHub Releases](https://github.com/game6789y-wq/Test-/releases)**.
+2. Select a release and download `app-debug.apk`.
+3. Review the release notes and checksum file, if included.
+4. Open the APK on your Android device and follow Android's installation prompts. Only install APKs you trust.
 
-This repository currently distributes a **debug-signed test APK**. It is intended for testing, not as a production-signed release. Android may require you to uninstall a previously installed build if its signing certificate differs; uninstalling can erase that app's local data.
+### Important signing note
 
-## 🛡️ Privacy and safe use
+The current automated workflow creates a **debug-signed test APK**, not a production-signed release. Each workflow run generates a temporary debug keystore, so its signing certificate can differ between builds. Android may not allow an update over an older build signed with a different certificate. Uninstalling the old app may resolve that conflict, but **can delete its local data**.
 
-- Use the findings as diagnostic information and verify important results independently.
-- Do not share device reports publicly if they contain information you consider private.
-- Do not use the app's results as the sole basis for high-impact security decisions.
+## Accuracy and safe use
 
-## 🧰 Project
+- A clean result does **not** guarantee that a device is secure.
+- A detected signal does **not** always mean the device is compromised; false positives are possible.
+- Device restrictions can prevent checks from seeing every relevant detail.
+- Verify important findings with trusted tools and independent sources.
+- Avoid publicly sharing diagnostic output that contains private device information.
 
-- **Source package:** [Android project ZIP](https://github.com/game6789y-wq/Test-/blob/main/bootcheck-oct-27-2026-12-24-44-am.zip)
-- **Downloads:** [Releases](https://github.com/game6789y-wq/Test-/releases)
-- **Build history:** [GitHub Actions](https://github.com/game6789y-wq/Test-/actions)
+BootCheck is an informational aid and should not be the sole basis for high-impact security decisions.
+
+## Project links
+
+- **[Download releases](https://github.com/game6789y-wq/Test-/releases)**
+- **[Build history and logs](https://github.com/game6789y-wq/Test-/actions)**
+- **[Source archive](https://github.com/game6789y-wq/Test-/blob/main/bootcheck-oct-27-2026-12-24-44-am.zip)**
+- **[Report an issue](https://github.com/game6789y-wq/Test-/issues)**
+
+## For contributors
+
+The Android project is stored in the source ZIP. The GitHub Actions workflow builds a debug APK when that archive or the workflow changes, then publishes the APK and SHA-256 checksum to a GitHub Release. Documentation-only changes no longer trigger an unnecessary APK build.
 
 ---
 
 <p align="center">
-  BootCheck · Android device inspection
+  <sub>BootCheck · Android device inspection · Built with GitHub Actions</sub>
 </p>
