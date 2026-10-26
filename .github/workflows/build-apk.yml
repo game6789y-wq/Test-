@@ -54,7 +54,17 @@ jobs:
           test -f source/settings.gradle.kts
           test -f source/app/build.gradle.kts
 
-      - name: Build debug APK (no release keystore required)
+      - name: Generate standard debug keystore
+        run: |
+          keytool -genkeypair -noprompt \
+            -keystore source/debug.keystore \
+            -storepass android \
+            -alias androiddebugkey \
+            -keypass android \
+            -dname "CN=Android Debug,O=Android,C=US" \
+            -keyalg RSA -keysize 2048 -validity 10000
+
+      - name: Build debug APK (no private release keystore required)
         run: gradle -p source --no-daemon --stacktrace assembleDebug
 
       - name: Verify APK exists
