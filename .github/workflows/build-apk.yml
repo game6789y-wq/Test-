@@ -6,6 +6,7 @@ on:
     paths:
       - 'bootcheck-oct-27-2026-12-24-44-am.zip'
       - '.github/workflows/build-apk.yml'
+      - 'README.md'
   workflow_dispatch:
 
 permissions:
