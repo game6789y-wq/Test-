@@ -71,8 +71,9 @@ jobs:
       - name: Accept Android SDK licenses
         shell: bash
         run: |
-          set -o pipefail
-          yes | sdkmanager --sdk_root="$ANDROID_HOME" --licenses
+          # sdkmanager exits successfully after accepting licenses; the yes
+          # process may receive SIGPIPE when sdkmanager closes stdin early.
+          yes | sdkmanager --sdk_root="$ANDROID_HOME" --licenses || true
 
       - name: Install required Android SDK packages
         run: |
