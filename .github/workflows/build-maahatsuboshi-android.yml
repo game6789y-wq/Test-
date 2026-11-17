@@ -26,6 +26,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - name: Run Rust unit tests
         run: cargo test --locked
+
   build-apk:
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -38,9 +39,20 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.10.2'
-      - uses: android-actions/setup-android@v3
+      - name: Locate Android SDK
+        run: |
+          echo "ANDROID_HOME=${ANDROID_HOME}"
+          test -d "${ANDROID_HOME}"
+          SDKMANAGER="$(find "${ANDROID_HOME}/cmdline-tools" -type f -name sdkmanager 2>/dev/null | sort | tail -n 1)"
+          if [ -z "$SDKMANAGER" ]; then
+            echo "sdkmanager not found under ANDROID_HOME"
+            exit 1
+          fi
+          echo "SDKMANAGER=$SDKMANAGER" >> "$GITHUB_ENV"
+      - name: Accept Android SDK licenses
+        run: yes | "$SDKMANAGER" --licenses || true
       - name: Install Android SDK components
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0" "cmake;3.22.1" "ndk;27.2.12479018"
+        run: "$SDKMANAGER" "platforms;android-35" "build-tools;35.0.0" "cmake;3.22.1" "ndk;27.2.12479018"
       - name: Build debug APK
         run: gradle -p maahatsuboshi-android --no-daemon --stacktrace assembleDebug
       - name: Verify APK and checksum
