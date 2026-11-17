@@ -1,125 +1,101 @@
 # MaaHatsuboshiTA Android
 
-<p align="center">
-  <strong>A native Android companion for a second Android device</strong><br />
-  Built with Kotlin, C++, and Rust · Early development
-</p>
+Native Android companion/controller project inspired by [Carpenter-MK1/MaaHatsuboshiTA](https://github.com/Carpenter-MK1/MaaHatsuboshiTA).
 
-<p align="center">
-  <a href="https://github.com/game6789y-wq/Test-/actions/workflows/build-maahatsuboshi-android.yml">
-    <img alt="Android CI" src="https://github.com/game6789y-wq/Test-/actions/workflows/build-maahatsuboshi-android.yml/badge.svg" />
-  </a>
-  <a href="https://github.com/game6789y-wq/Test-/tree/android-maahatsuboshi">
-    <img alt="Development branch" src="https://img.shields.io/badge/branch-android--maahatsuboshi-blue" />
-  </a>
-  <img alt="Android" src="https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white" />
-  <img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-2.0.21-7F52FF?logo=kotlin&logoColor=white" />
-  <img alt="C++" src="https://img.shields.io/badge/C++-Native-00599C?logo=cplusplus&logoColor=white" />
-  <img alt="Rust" src="https://img.shields.io/badge/Rust-Core-000000?logo=rust&logoColor=white" />
-</p>
-
----
-
-## About
-
-**MaaHatsuboshiTA Android** is an Android application project inspired by [Carpenter-MK1/MaaHatsuboshiTA](https://github.com/Carpenter-MK1/MaaHatsuboshiTA). The long-term goal is to provide a native Android interface for connecting to and operating a second Android device through Android Debug Bridge (ADB).
-
-The project is being developed in stages, with a focus on a maintainable native architecture.
-
-> **Current status: foundation only.** The app currently contains a starter dashboard and initial native components. It cannot yet pair with, communicate with, or control another Android device.
+> **Status: early foundation — not yet a functional ADB controller.** The current app does not pair with or control a second Android device.
 
 ## Architecture
 
-| Layer | Technology | Responsibility |
-| --- | --- | --- |
-| Android app | Kotlin, Jetpack Compose | Native interface and user settings |
-| Native engine | C++, JNI, CMake | Native processing integration |
-| Task core | Rust | Initial task-state model |
-| CI | GitHub Actions | Tests, debug APK build, verification, artifact upload |
+- **Kotlin + Jetpack Compose** — Android application and dashboard.
+- **C++ + JNI + CMake** — initial native library integration.
+- **Rust** — platform-independent task-state core.
+- **GitHub Actions** — Rust tests and Android debug APK workflow.
 
-## What exists today
+## Project layout
 
-- Android Compose dashboard.
-- Fields for target device IP, ADB port, wireless pairing port, and pairing code.
-- Initial C++ library exposed to Kotlin through JNI.
+```text
+maahatsuboshi-android/
+├── app/
+│   └── src/main/
+│       ├── java/                 # Kotlin application UI
+│       ├── cpp/                  # C++, JNI, CMake
+│       └── AndroidManifest.xml
+├── rust/                         # Rust task core and tests
+├── build.gradle.kts
+└── settings.gradle.kts
+```
+
+## Implemented
+
+- Compose dashboard.
+- Input fields for target IP, ADB port, wireless pairing port, and pairing code.
+- Initial C++ JNI library.
 - Rust task-state model with start/pause handling and unit tests.
-- GitHub Actions workflow configured for Rust tests and Android debug APK generation.
+- CI workflow configured to run Rust tests, build a debug APK, verify its checksum, and upload the artifact.
 
-## Planned — not available yet
+## Not implemented
 
-- Wireless Debugging pairing, authentication, and ADB transport.
-- Device connection lifecycle and reconnect handling.
+- Wireless ADB pairing, authentication, or network transport.
+- Device session management and reconnect logic.
 - Remote screen capture or streaming.
-- Remote touch and key input forwarding.
-- OCR and image/template matching.
-- Daily, Contest, Farm New Account, and other automation pipelines.
-- Integration of upstream frameworks, resources, or models.
+- Touch/key input forwarding.
+- OCR, template matching, or game recognition.
+- Daily, Contest, Farm New Account, or other automation pipelines.
 
-The current **Connect** control is a placeholder. Do not use this project as if it were already a working remote-control or game-automation application.
+The **Connect** button is currently a placeholder. The app should be treated as a development shell only.
 
-## Build and CI
-
-Check the live status rather than relying on a README snapshot:
-
-- [Android build workflow](https://github.com/game6789y-wq/Test-/actions/workflows/build-maahatsuboshi-android.yml)
-- [All workflow runs and artifacts](https://github.com/game6789y-wq/Test-/actions)
-- [Development branch](https://github.com/game6789y-wq/Test-/tree/android-maahatsuboshi)
-
-A debug APK is available only when a workflow run completes successfully, the APK verification step passes, and the artifact is uploaded. A debug artifact is for testing; it is not a production release.
-
-## Build locally
-
-### Requirements
+## Requirements
 
 - JDK 17
-- Android SDK and the SDK packages required by the Gradle project
+- Android SDK with the packages required by the Gradle configuration
 - Gradle compatible with the configured Android Gradle Plugin
-- Rust toolchain for Rust tests
+- Rust toolchain (for Rust tests)
 
-### Android debug APK
+## Build debug APK
 
-From the repository root:
+Run from the repository root:
 
 ```bash
 cd maahatsuboshi-android
 gradle --no-daemon assembleDebug
 ```
 
-Output:
+Expected output:
 
 ```
-app/build/outputs/apk/debug/app-debug.apk
+maahatsuboshi-android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
-### Rust tests
+## Run Rust tests
 
 ```bash
 cd maahatsuboshi-android/rust
 cargo test
 ```
 
-## Roadmap
+## Continuous integration
 
-1. Implement secure Android Wireless Debugging pairing and authenticated ADB communication.
-2. Add connection state, timeout, disconnect, and reconnect handling.
-3. Implement authorized screen capture and remote input forwarding.
-4. Add OCR and template-matching capabilities.
-5. Port automation pipelines in small, testable stages.
-6. Validate compatibility and reliability on real Android devices.
+See [GitHub Actions](https://github.com/game6789y-wq/Test-/actions/workflows/build-maahatsuboshi-android.yml) for the current build result.
 
-## Security
+The workflow is intended to:
+1. Run Rust unit tests.
+2. Build the Android debug APK.
+3. Verify the APK and checksum.
+4. Upload the APK as a workflow artifact.
 
-- Connect only to devices you own or are explicitly authorized to control.
-- Make the target device and connection state visible before sending commands.
-- Do not expose pairing codes, credentials, or private screen content in logs.
-- Keep remote-control features disabled until pairing and authorization are implemented.
+Only treat an APK as available when the run succeeds and the artifact is present. A debug artifact is not a signed production release.
 
-## Upstream and third-party licensing
+## Development roadmap
 
-This project is inspired by the upstream repository linked above. Before reusing source code, assets, models, binaries, or framework components, review their licenses and preserve all required copyright and third-party notices. This repository's current foundation does not claim to include the upstream automation pipelines or assets.
+1. Implement secure Wireless Debugging pairing and authenticated ADB transport.
+2. Add device connection state, timeout, disconnect, and reconnect handling.
+3. Implement authorized screen capture and input forwarding.
+4. Add OCR and template matching.
+5. Port automation pipelines after reviewing upstream licenses and dependencies.
+6. Test on real devices and document verified compatibility.
 
----
+## Security and licensing
 
-<p align="center">
-  <sub>MaaHatsuboshiTA Android · Open development project</sub>
-</p>
+Only connect to devices you own or are authorized to control. Do not unnecessarily log or store pairing codes, credentials, or private screen content.
+
+This project is inspired by the upstream project. Review its license and all third-party notices before reusing source code, resources, models, binaries, or framework components. No upstream automation assets are claimed to be included in this foundation.
