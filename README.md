@@ -1,79 +1,112 @@
-# BootCheck for Android
+# MaaHatsuboshiTA Android
 
 <p align="center">
-  <strong>A clearer view of your Android device's boot and security signals</strong><br>
-  A practical utility for checking selected bootloader, root, and integrity indicators.
+  <strong>Android-native companion for controlling a second Android device</strong><br>
+  A development project inspired by <a href="https://github.com/Carpenter-MK1/MaaHatsuboshiTA">Carpenter-MK1/MaaHatsuboshiTA</a>.
 </p>
 
 <p align="center">
-  <a href="https://github.com/game6789y-wq/Test-/releases">
-    <img alt="Download APK" src="https://img.shields.io/badge/Download-APK-218838?logo=android&logoColor=white" />
+  <a href="https://github.com/game6789y-wq/Test-/actions/workflows/build-maahatsuboshi-android.yml">
+    <img alt="Android build workflow" src="https://github.com/game6789y-wq/Test-/actions/workflows/build-maahatsuboshi-android.yml/badge.svg" />
   </a>
-  <a href="https://github.com/game6789y-wq/Test-/actions/workflows/build-apk.yml">
-    <img alt="Build status" src="https://github.com/game6789y-wq/Test-/actions/workflows/build-apk.yml/badge.svg" />
+  <a href="https://github.com/game6789y-wq/Test-/tree/android-maahatsuboshi">
+    <img alt="Development branch" src="https://img.shields.io/badge/branch-android--maahatsuboshi-blue" />
   </a>
-  <a href="https://github.com/game6789y-wq/Test-/commits/main">
-    <img alt="Latest commits" src="https://img.shields.io/github/last-commit/game6789y-wq/Test-" />
-  </a>
+  <img alt="Platform" src="https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white" />
 </p>
 
 ---
 
-## About
+## Overview
 
-**BootCheck** is an Android device-inspection utility that brings selected boot and security-related checks together. It is intended to help users understand device configuration and investigate compatibility or troubleshooting questions.
+MaaHatsuboshiTA Android is an Android application project intended to become a companion/controller for a second Android device. The current codebase is an early development foundation: it provides a native dashboard and the initial Kotlin, C++, and Rust project structure.
 
-## Key areas
+**This is not yet a functional automation tool.** Wireless ADB pairing, device communication, screen streaming, remote input, OCR, and task execution have not been completed.
 
-| Area | What it helps you investigate |
+## Technology
+
+| Component | Purpose |
 | --- | --- |
-| **Bootloader** | Available indicators about the device's bootloader state |
-| **Root detection** | Signals that may indicate root access or system modification |
-| **Integrity checks** | Available device or app integrity-related findings |
-| **Troubleshooting** | Clues to help guide further investigation when an app or feature has compatibility issues |
+| Kotlin + Jetpack Compose | Native Android interface |
+| C++ + JNI + CMake | Native processing layer |
+| Rust | Platform-independent task-state core |
+| GitHub Actions | Automated tests and debug APK build |
 
-The checks available and their results can vary by device, manufacturer, Android version, and system configuration. Treat findings as indicators—not definitive proof.
+## Current implementation
 
-## Who might use it?
+- Compose dashboard with remote device IP and ADB connection fields.
+- Pairing-port and pairing-code input fields.
+- Native C++ library connected through JNI.
+- Rust task-state core with unit tests.
+- CI workflow configured to run Rust tests, build a debug APK, verify its checksum, and upload the APK as a workflow artifact.
 
-- Android users exploring their device's configuration.
-- Users troubleshooting bootloader- or root-related compatibility issues.
-- Developers and testers performing an initial device check.
+### Not implemented yet
 
-## Download and install
+- Wireless Debugging pairing, authentication, and ADB transport.
+- Remote screen capture or streaming.
+- Remote touch and key input forwarding.
+- OCR and image/template matching.
+- Daily, Contest, Farm New Account, or other task pipelines.
+- Import and integration of upstream resources or MaaFramework components.
 
-1. Open **[GitHub Releases](https://github.com/game6789y-wq/Test-/releases)**.
-2. Select a release and download `app-debug.apk`.
-3. Review the release notes and checksum file, if included.
-4. Open the APK on your Android device and follow Android's installation prompts. Only install APKs you trust.
+## Build status and downloads
 
-### Important signing note
+- **[Android build workflow](https://github.com/game6789y-wq/Test-/actions/workflows/build-maahatsuboshi-android.yml)**
+- **[Workflow runs and build artifacts](https://github.com/game6789y-wq/Test-/actions)**
+- **[Development branch](https://github.com/game6789y-wq/Test-/tree/android-maahatsuboshi)**
 
-The current automated workflow creates a **debug-signed test APK**, not a production-signed release. Each workflow run generates a temporary debug keystore, so its signing certificate can differ between builds. Android may not allow an update over an older build signed with a different certificate. Uninstalling the old app may resolve that conflict, but **can delete its local data**.
+Debug APKs are distributed as workflow artifacts only after a successful build and verification. A successful debug build does not mean the device-control features are complete. No production release is promised at this stage.
 
-## Accuracy and safe use
+## Build locally
 
-- A clean result does **not** guarantee that a device is secure.
-- A detected signal does **not** always mean the device is compromised; false positives are possible.
-- Device restrictions can prevent checks from seeing every relevant detail.
-- Verify important findings with trusted tools and independent sources.
-- Avoid publicly sharing diagnostic output that contains private device information.
+Requirements:
+- Android SDK
+- JDK 17
+- Gradle compatible with the project's Android Gradle Plugin
+- Rust toolchain (for Rust tests)
 
-BootCheck is an informational aid and should not be the sole basis for high-impact security decisions.
+Build the Android debug APK from the project directory:
 
-## Project links
+```bash
+cd maahatsuboshi-android
+gradle --no-daemon assembleDebug
+```
 
-- **[Download releases](https://github.com/game6789y-wq/Test-/releases)**
-- **[Build history and logs](https://github.com/game6789y-wq/Test-/actions)**
-- **[Source archive](https://github.com/game6789y-wq/Test-/blob/main/bootcheck-oct-27-2026-12-24-44-am.zip)**
-- **[Report an issue](https://github.com/game6789y-wq/Test-/issues)**
+Run the Rust tests:
 
-## For contributors
+```bash
+cd maahatsuboshi-android/rust
+cargo test
+```
 
-The Android project is stored in the source ZIP. The GitHub Actions workflow builds a debug APK when that archive or the workflow changes, then publishes the APK and SHA-256 checksum to a GitHub Release. Documentation-only changes no longer trigger an unnecessary APK build.
+Expected APK path:
+
+```
+maahatsuboshi-android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+## Roadmap
+
+1. Implement secure Wireless Debugging pairing and authenticated ADB communication.
+2. Add authorized remote screen capture and input forwarding.
+3. Design a reliable device connection lifecycle, timeout handling, reconnect, pause, and stop behavior.
+4. Add OCR and template-matching components.
+5. Port task pipelines only after reviewing upstream licensing and dependencies.
+6. Validate on real devices before describing the app as functional.
+
+## Safety and permissions
+
+- Pair only with Android devices that you own or are explicitly authorized to control.
+- Display the target device and connection state clearly before sending input.
+- Do not store pairing codes or credentials unnecessarily.
+- Treat diagnostic and screen content as potentially private.
+
+## Upstream project and licensing
+
+This project is inspired by the upstream repository linked above. Before importing source files, images, models, binaries, or framework components, review the applicable licenses and preserve required copyright and third-party notices. The current foundation does not claim to include the upstream automation pipelines or assets.
 
 ---
 
 <p align="center">
-  <sub>BootCheck · Android device inspection · Built with GitHub Actions</sub>
+  <sub>MaaHatsuboshiTA Android · Early development foundation</sub>
 </p>
